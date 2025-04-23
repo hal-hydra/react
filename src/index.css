@@ -1,0 +1,39 @@
+/* index.css (GLOBAL) */
+:root {
+  --primary-color: #2ecc71; /* A nice green primary */
+  --bot-msg-bg: #f0f4f8; /* Light blueish bot message background */
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #f9fafb;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background-color, #f9fafb);
+}
+
+h1, h2, h3, p {
+  margin: 4-px 0;
+  padding: 40px 0;
+}
+
+button, input {
+  font-family: inherit;
+}
+
+/* Light mode tweak */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+}
