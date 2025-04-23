@@ -15,7 +15,8 @@ function App() {
 
   // Configure your backend URL here
   // TODO: Replace with your ngrok URL when available
-  const BACKEND_URL = "https://your-ngrok-url.ngrok.io/chat";
+  const BACKEND_URL =
+    "https://a414-103-174-110-64.ngrok-free.app -> http://localhost:5000";
 
   useEffect(() => {
     // Initial welcome message
