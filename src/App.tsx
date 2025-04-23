@@ -13,7 +13,7 @@ function App() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const BACKEND_URL = "https://a414-103-174-110-64.ngrok-free.app/chat"; // your backend
+  const BACKEND_URL = "https://a414-103-174-110-64.ngrok-free.app/chat"; // Your backend URL
 
   useEffect(() => {
     // Initial welcome message
@@ -41,7 +41,7 @@ function App() {
   const sendMessage = async (message: string) => {
     if (!message.trim()) return;
 
-    // Add user message
+    // Add user message to chat
     const userMessage: Message = {
       id: Date.now().toString(),
       content: message,
@@ -69,13 +69,15 @@ function App() {
         }
       );
 
+      console.log("Backend response:", data); // 🐛 Debug print
+
       // Simulate typing delay
       setTimeout(() => {
         const botMessage: Message = {
           id: (Date.now() + 1).toString(),
-          content:
-            data.response ||
-            "I'm processing your input. Let's continue our assessment journey.",
+          content: data.response
+            ? data.response
+            : "🤖 I'm still learning. Can you tell me more?",
           sender: "bot",
           timestamp: new Date(),
         };
@@ -86,7 +88,7 @@ function App() {
     } catch (error) {
       console.error("Error fetching response:", error);
 
-      // Fallback error message
+      // Fallback response in case of error
       setTimeout(() => {
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
