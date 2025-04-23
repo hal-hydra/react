@@ -1,21 +1,19 @@
-// Personality Assessment Chatbot
-// File: src/App.tsx
-
+// src/App.tsx
 import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import "./App.css";
 import ChatMessage from "./components/ChatMessage.tsx";
 import ChatInput from "./components/ChatInput";
 import BubbleAnimation from "./components/BubbleAnimation.tsx";
 import TypingIndicator from "./components/TypingIndicator";
 import { Message } from "./types.ts";
+
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Configure your backend URL here
-  // TODO: Replace with your ngrok URL when available
-  const BACKEND_URL = "https://a414-103-174-110-64.ngrok-free.app/chat";
+  const BACKEND_URL = "https://a414-103-174-110-64.ngrok-free.app/chat"; // your backend
 
   useEffect(() => {
     // Initial welcome message
@@ -24,7 +22,7 @@ function App() {
         {
           id: "1",
           content:
-            "Hi there! I'm your personality assessment guide. Let's explore your personality through Assement . Ready to begin?",
+            "Hi there! I'm your personality assessment guide. Let's explore your personality through assessment. Ready to begin?",
           sender: "bot",
           timestamp: new Date(),
         },
@@ -43,7 +41,7 @@ function App() {
   const sendMessage = async (message: string) => {
     if (!message.trim()) return;
 
-    // Add user message to chat
+    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       content: message,
@@ -55,23 +53,21 @@ function App() {
     setIsTyping(true);
 
     try {
-      // Call backend API to get response
-      // TODO: Replace with actual API call to your backend
-      const response = await fetch(BACKEND_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const { data } = await axios.post(
+        BACKEND_URL,
+        {
           message,
           history: messages.map((msg) => ({
             content: msg.content,
             role: msg.sender === "user" ? "user" : "assistant",
           })),
-        }),
-      });
-
-      const data = await response.json();
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       // Simulate typing delay
       setTimeout(() => {
@@ -90,12 +86,11 @@ function App() {
     } catch (error) {
       console.error("Error fetching response:", error);
 
-      // Fallback response in case of error
+      // Fallback error message
       setTimeout(() => {
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
-          content:
-            "I'm having trouble connecting to the assessment service. Please try again in a moment.",
+          content: "⚠️ Unable to connect. Please try again later.",
           sender: "bot",
           timestamp: new Date(),
         };
